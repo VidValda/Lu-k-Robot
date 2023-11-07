@@ -18,6 +18,7 @@ class HumanDetector:
         self.detections = None
         self.width_ratio = None
         self.height_ratio = None
+        self.points = None
 
 
     # darknet helper function to run detection on image
@@ -39,6 +40,7 @@ class HumanDetector:
         self.detections = detections
         self.width_ratio = width_ratio
         self.height_ratio = height_ratio
+        self.get_points()
         return detections, width_ratio, height_ratio
     
     def draw(self,img):
@@ -51,4 +53,18 @@ class HumanDetector:
             image_copy = cv2.putText(image_copy, "{} [{:.2f}]".format(label, float(confidence)),
                                 (left, top - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                                 self.class_colors[label], 2)
+        if self.points is not None:
+            for point in self.points:
+                image_copy = cv2.circle(image_copy,point, 3, (0, 0, 255) ,3) 
+                
         return image_copy
+    
+    def get_points(self):
+        puntos = []
+        for label, confidence, bbox in self.detections:
+            left, top, right, bottom = bbox2points(bbox)
+            left, top, right, bottom = int(left * self.width_ratio), int(top * self.height_ratio), int(right * self.width_ratio), int(bottom * self.height_ratio)
+            x = (left + right) // 2
+            y = (top + bottom) //2
+            puntos.append((x,y))
+        self.points = puntos
