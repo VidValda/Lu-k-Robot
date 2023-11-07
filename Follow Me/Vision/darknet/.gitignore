@@ -22,7 +22,7 @@ opencv/
 convnet/
 decaf/
 submission/
-cfg/
+cfg/*
 !cfg/custom-yolov4-tiny-detector.cfg
 temp/
 build/darknet/*
