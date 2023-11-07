@@ -40,7 +40,7 @@ class HumanDetector:
         self.detections = detections
         self.width_ratio = width_ratio
         self.height_ratio = height_ratio
-        self.get_points()
+        self.get_points(detections)
         return detections, width_ratio, height_ratio
     
     def draw(self,img):
@@ -59,9 +59,9 @@ class HumanDetector:
                 
         return image_copy
     
-    def get_points(self):
+    def get_points(self,detections):
         puntos = []
-        for label, confidence, bbox in self.detections:
+        for label, confidence, bbox in detections:
             left, top, right, bottom = bbox2points(bbox)
             left, top, right, bottom = int(left * self.width_ratio), int(top * self.height_ratio), int(right * self.width_ratio), int(bottom * self.height_ratio)
             x = (left + right) // 2
