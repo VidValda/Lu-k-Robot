@@ -13,7 +13,8 @@
 *.pyc
 *.bak
 mnist/
-data/
+data/labels
+data/obj
 caffe/
 grasp/
 images/
@@ -22,6 +23,7 @@ convnet/
 decaf/
 submission/
 cfg/
+!cfg/custom-yolov4-tiny-detector.cfg
 temp/
 build/darknet/*
 build_*/
