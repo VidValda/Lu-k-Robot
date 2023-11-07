@@ -62,11 +62,11 @@ Thumbs.db
 src/version.h
 
 # Build artifacts
-lib/
-share/
-include/darknet/
-uselib
-uselib_track
-darknet
-kmeansiou
-vcpkg/
+#lib/
+#share/
+#include/darknet/
+#uselib
+#uselib_track
+#darknet
+#kmeansiou
+#vcpkg/
