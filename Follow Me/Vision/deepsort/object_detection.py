@@ -57,7 +57,7 @@ class HumanDetector:
                                 self.class_colors[label], 2)
         if self.points is not None:
             for point in self.points:
-                image_copy = cv2.circle(image_copy,point, 3, (0, 0, 255) ,3) 
+                image_copy = cv2.circle(image_copy,point, 3, (255, 0, 0) ,3) 
                 
         return image_copy
     
@@ -71,11 +71,11 @@ class HumanDetector:
             left, top, right, bottom = track.to_ltrb()
             left, top, right, bottom = int(left * self.width_ratio), int(top * self.height_ratio), int(right * self.width_ratio), int(bottom * self.height_ratio)
 
-            print(left, top, right, bottom)
             image_copy = cv2.rectangle(image_copy, (int(left), int(top)), (int(right), int(bottom)), [0,0,255], 2)
             image_copy = cv2.putText(image_copy, "{} [{:.2f}]".format(track_id, float(track.age)),
                                 (int(left), int(top) - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                                 [0,0,255], 2)
+            image_copy = cv2.circle(image_copy,((right+left)//2,(top+bottom)//2), 3, (0, 0, 255) ,3) 
 
         return image_copy
     

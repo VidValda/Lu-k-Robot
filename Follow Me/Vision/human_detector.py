@@ -7,7 +7,24 @@ if __name__ == "__main__":
    
     capture = cv2.VideoCapture(0)
     human = HumanDetector()
-    tracker = DeepSort(max_age=5)
+    tracker = DeepSort(
+        max_iou_distance=0.7,
+        max_age=200,
+        n_init=3,
+        nms_max_overlap=1.0,
+        max_cosine_distance=0.2,
+        nn_budget=None,
+        gating_only_position=False,
+        override_track_class=None,
+        embedder="mobilenet",
+        half=True,
+        bgr=True,
+        embedder_gpu=True,
+        embedder_wts=None,
+        polygon=False,
+        today=None
+
+    )
 
     while (capture.isOpened()):
         
