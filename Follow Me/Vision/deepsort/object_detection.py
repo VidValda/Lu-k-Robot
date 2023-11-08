@@ -1,5 +1,7 @@
 # import darknet functions to perform object detections
 from darknet.darknet import *
+from deep_sort_realtime.deep_sort.detection import Detection
+
 
 import cv2
 class HumanDetector:
@@ -59,6 +61,24 @@ class HumanDetector:
                 
         return image_copy
     
+    def drawbbs(self,img,tracks):
+        image_copy = np.copy(img)
+        # loop through detections and draw them on transparent overlay image
+        for track in tracks:
+            if not track.is_confirmed():
+                continue
+            track_id = track.track_id
+            left, top, right, bottom = track.to_ltrb()
+            left, top, right, bottom = int(left * self.width_ratio), int(top * self.height_ratio), int(right * self.width_ratio), int(bottom * self.height_ratio)
+
+            print(left, top, right, bottom)
+            image_copy = cv2.rectangle(image_copy, (int(left), int(top)), (int(right), int(bottom)), [0,0,255], 2)
+            image_copy = cv2.putText(image_copy, "{} [{:.2f}]".format(track_id, float(track.age)),
+                                (int(left), int(top) - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                                [0,0,255], 2)
+
+        return image_copy
+    
     def get_points(self,detections):
         puntos = []
         for label, confidence, bbox in detections:
@@ -68,3 +88,14 @@ class HumanDetector:
             y = (top + bottom) //2
             puntos.append((x,y))
         self.points = puntos
+
+    def yolo2deep(self):
+        detecciones = []
+        for label, confidence, bbox in self.detections:
+            left, top, right, bottom = bbox2points(bbox)
+            w = abs(right - left)
+            h = abs(bottom - top)
+
+            deepdect = ([left,top,w,h],confidence,label)
+            detecciones.append(deepdect)
+        return detecciones
