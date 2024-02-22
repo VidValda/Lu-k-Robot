@@ -77,7 +77,7 @@ class HumanDetector:
                                 [0,0,255], 2)
             image_copy = cv2.circle(image_copy,((right+left)//2,(top+bottom)//2), 3, (0, 0, 255) ,3) 
 
-        return image_copy
+        return (image_copy,self.width_ratio,self.height_ratio)
     
     def get_points(self,detections):
         puntos = []
@@ -90,6 +90,9 @@ class HumanDetector:
         self.points = puntos
 
     def yolo2deep(self):
+        if self.detections is None:
+            return []
+
         detecciones = []
         for label, confidence, bbox in self.detections:
             left, top, right, bottom = bbox2points(bbox)
